@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 project(bwa)
 
 set(CMAKE_CXX_STANDARD 11)
-add_compile_options(-g -Wall -Wno-unused-function -Wno-unused-variable -Wno-sign-compare)
+add_compile_options(-Wall -Wno-unused-function -Wno-unused-variable -Wno-sign-compare)
+add_compile_definitions(HAVE_PTHREAD USE_MALLOC_WRAPPERS)  # -DHAVE_PTHREAD -DUSE_MALLOC_WRAPPERS
 
 ### add extra (third-party) include directories
 # include_directories(include)

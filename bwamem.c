@@ -963,7 +963,8 @@ void mem_aln2sam(const mem_opt_t *opt, const bntseq_t *bns, kstring_t *str, bseq
 		kputsn((opt->flag&MEM_F_XB)? "\tXB:Z:" : "\tXA:Z:", 6, str);
 		kputs(p->XA, str);
 	}
-	if (s->comment) { kputc('\t', str); kputs(s->comment, str); }
+    // barcode style for common Illumina fastq format
+	if (s->comment && s->comment[3] == ':' && s->comment[5] == ':') { kputs("\tBC:Z:", str); kputs(&s->comment[6], str); }
 	if ((opt->flag&MEM_F_REF_HDR) && p->rid >= 0 && bns->anns[p->rid].anno != 0 && bns->anns[p->rid].anno[0] != 0) {
 		int tmp;
 		kputsn("\tXR:Z:", 6, str);
