@@ -1201,7 +1201,7 @@ typedef struct {
 	int64_t n_processed;
 } worker_t;
 
-static void worker1(void *data, int i, int tid)
+static void worker1(void *data, long i, int tid)
 {
 	worker_t *w = (worker_t*)data;
 	if (!(w->opt->flag&MEM_F_PE)) {
@@ -1215,7 +1215,7 @@ static void worker1(void *data, int i, int tid)
 	}
 }
 
-static void worker2(void *data, int i, int tid)
+static void worker2(void *data, long i, int tid)
 {
 	extern int mem_sam_pe(const mem_opt_t *opt, const bntseq_t *bns, const uint8_t *pac, const mem_pestat_t pes[4], uint64_t id, bseq1_t s[2], mem_alnreg_v a[2]);
 	extern void mem_reg2ovlp(const mem_opt_t *opt, const bntseq_t *bns, const uint8_t *pac, bseq1_t *s, mem_alnreg_v *a);
@@ -1235,7 +1235,7 @@ static void worker2(void *data, int i, int tid)
 
 void mem_process_seqs(const mem_opt_t *opt, const bwt_t *bwt, const bntseq_t *bns, const uint8_t *pac, int64_t n_processed, int n, bseq1_t *seqs, const mem_pestat_t *pes0)
 {
-	extern void kt_for(int n_threads, void (*func)(void*,int,int), void *data, int n);
+	extern void kt_for(int n_threads, void (*func)(void*,long,int), void *data, long n);
 	worker_t w;
 	mem_pestat_t pes[4];
 	double ctime, rtime;
@@ -1247,7 +1247,7 @@ void mem_process_seqs(const mem_opt_t *opt, const bwt_t *bwt, const bntseq_t *bn
 	w.opt = opt; w.bwt = bwt; w.bns = bns; w.pac = pac;
 	w.seqs = seqs; w.n_processed = n_processed;
 	w.pes = &pes[0];
-	w.aux = malloc(opt->n_threads * sizeof(smem_aux_t));
+	w.aux = malloc(opt->n_threads * sizeof(smem_aux_t*));
 	for (i = 0; i < opt->n_threads; ++i)
 		w.aux[i] = smem_aux_init();
 	kt_for(opt->n_threads, worker1, &w, (opt->flag&MEM_F_PE)? n>>1 : n); // find mapping positions

@@ -1,3 +1,17 @@
+Release 0.7.19 (22 March 2025)
+------------------------------
+
+Notable changes:
+
+ * Bugfix: internal `@HD` lines. The bug was introduced in 0.7.18.
+ * Merged #414, #391, #346, #312, #311, #308, #291, #288, #286 and #212
+
+BWA produces alignments identical to v0.7.17 and v0.7.18.
+
+(0.7.19: 22 March 2025, r1273)
+
+
+
 Release 0.7.18 (14 April 2024)
 ------------------------------
 
@@ -1213,7 +1227,7 @@ Beta Release 0.1.4 (22 July, 2008)
 Beta Release 0.1.3 (21 July, 2008)
 ----------------------------------
 
-Improve the speed with some tricks on retrieving occurences. The results
+Improve the speed with some tricks on retrieving occurrences. The results
 should be exactly the same as that of 0.1.2.
 
 (0.1.3: 21 July 2008, r382)

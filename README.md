@@ -6,8 +6,7 @@
 **Note: [minimap2][minimap2] has replaced BWA-MEM for __PacBio and Nanopore__ read
 alignment.** It retains all major BWA-MEM features, but is ~50 times as fast,
 more versatile, more accurate and produces better base-level alignment.
-A beta version of [BWA-MEM2][bwa-mem2] has been released for short-read mapping.
-BWA-MEM2 is about twice as fast as BWA-MEM and outputs near identical alignments.
+[BWA-MEM2][bwa-mem2] is 50-100% faster than BWA-MEM and outputs identical alignments.
 
 [minimap2]: https://github.com/lh3/minimap2
 [bwa-mem2]: https://github.com/bwa-mem2/bwa-mem2
@@ -84,6 +83,7 @@ do not have plan to submit it to a peer-reviewed journal in the near future.
 5. [How can a BWA-backtrack alignment stands out of the end of a chromosome?](#endref)
 6. [Does BWA work with ALT contigs in the GRCh38 release?](#altctg)
 7. [Can I just run BWA-MEM against GRCh38+ALT without post-processing?](#postalt)
+8. [Why does BWA use a lot of memory?](#largemem)
 
 #### <a name="type"></a>1. What types of data does BWA work with?
 
@@ -164,8 +164,17 @@ post-processing helps to reduce false mappings caused by reads from the
 diverged part of ALT contigs and also enables HLA typing. It is recommended to
 run the post-processing script.
 
+### <a name="largemem"></a>8. Why does BWA use a lot of memory?
 
+This is typically caused by FASTQ generated from a coordinate-sorted BAM.
+BWA uses a lot more memory for centromeric reads than for unique reads.
+In a FASTQ file generated from a sequencing run, centromeric reads are rare in each batch and rarely cause troubles.
+However, in a coordinate-sorted FASTQ file, a whole batch could consist of centromeric reads.
+Such a batch will take a lot more memory and time to map; the insert size estimate will be distorted as well.
+General rule: ***NEVER*** use Picard SamToFastq on coordiate-sorted BAM;
+use samtools [collate+fastq][remap] instead.
 
+[remap]: https://lh3.github.io/2021/07/06/remapping-an-aligned-bam
 [1]: http://en.wikipedia.org/wiki/GNU_General_Public_License
 [2]: https://github.com/lh3/bwa
 [3]: http://sourceforge.net/projects/bio-bwa/files/
